@@ -10,10 +10,13 @@ tot2 = 0
 def score(other, me):
     d = me - other
     if d == 0:
+        # draw
         return 4 + me
     elif d == 1 or d == -2:
+        # win
         return 7 + me
     else:
+        # lose
         return 1 + me
 
 
@@ -31,10 +34,8 @@ def calc(other, me):
 
 
 for line in fileinput.input():
-    l = line.strip()
-    other, me = [ord(x) - 65 for x in l.split()]
-    if me > 4:
-        me -= 23
+    other, me = [ord(x) - 65 for x in line.strip().split()]
+    me -= 23
     tot += score(other, me)
 
     me = calc(other, me)
