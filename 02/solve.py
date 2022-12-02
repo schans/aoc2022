@@ -8,29 +8,11 @@ tot2 = 0
 
 
 def score(other, me):
-    d = me - other
-    if d == 0:
-        # draw
-        return 4 + me
-    elif d == 1 or d == -2:
-        # win
-        return 7 + me
-    else:
-        # lose
-        return 1 + me
+    return (((me-other) * 3) + 4) % 9 + me
 
 
 def calc(other, me):
-    if me == 0:
-        # lose
-        me = other - 1
-    elif me == 1:
-        # draw
-        me = other
-    else:
-        # win
-        me = other + 1
-    return me % 3
+    return (other + me - 1) % 3
 
 
 for line in fileinput.input():
