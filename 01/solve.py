@@ -3,12 +3,9 @@
 import fileinput
 
 # counters
-cals = list()
-sec = 0
-thrid = 0
 cur = 0
+cals = list()
 
-# store prev values
 for line in fileinput.input():
     l = line.strip()
     if not l:
