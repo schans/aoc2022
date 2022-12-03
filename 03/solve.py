@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import fileinput
 
@@ -22,13 +22,13 @@ for line in fileinput.input():
         continue
 
     # part1
-    mid = int(len(l)/2)
-    e = (set(l[0:mid]) & set(l[mid:])).pop()
+    mid = len(l) // 2
+    e, = set(l[0:mid]) & set(l[mid:])
     tot += score(e)
 
     # part2
     if p and pp:
-        c = (p & pp & set(l)).pop()
+        c, = p & pp & set(l)
         tot2 += score(c)
         p = pp = None
     else:
