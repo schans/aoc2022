@@ -23,9 +23,7 @@ for line in fileinput.input():
 
     # part1
     mid = int(len(l)/2)
-    f = set(l[0:mid])
-    s = set(l[mid:])
-    e = (f & s).pop()
+    e = (set(l[0:mid]) & set(l[mid:])).pop()
     tot += score(e)
 
     # part2
