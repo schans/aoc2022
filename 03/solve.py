@@ -17,10 +17,10 @@ def score(c) -> int:
 
 
 for line in fileinput.input():
-
     l = line.strip()
     if not l:
         continue
+
     # part1
     mid = int(len(l)/2)
     f = set(l[0:mid])
