@@ -85,7 +85,6 @@ for c in range(0, C):
             S.add((r, c))
             if m == 9:
                 break
-tot = len(S)
 
 
 for s in S:
@@ -97,7 +96,7 @@ for s in S:
         v *= get_dist(s, d)
     if v > max:
         max = v
-        # print("max", max, "loc", s)
 
 
+tot = len(S)
 print(f"Scores {tot} {max}")
