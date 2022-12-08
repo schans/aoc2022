@@ -22,6 +22,33 @@ for line in fileinput.input():
 C = len(data[0])
 
 
+def dump():
+    CYAN = '\033[1m'
+    ENDC = '\033[0m'
+    print('-'*12)
+    for r in range(0, R):
+        for c in range(0, C):
+            if (r, c) in S:
+                print(f"{CYAN}{data[r][c]}{ENDC}", end="")
+            else:
+                print(data[r][c], end="")
+        print()
+    print('-'*12)
+
+
+def is_visible(c, r):
+    h = data[c][r]
+    for (dx, dy) in DIRS:
+        x, y = c, r
+        while True:
+            x += dx
+            y += dy
+            if not (0 <= x < R and 0 <= y < C):
+                return True
+            if data[x][y] >= h:
+                break
+
+
 def get_dist(s, d):
     (r, c) = s
     (dx, dy) = d
@@ -38,53 +65,10 @@ def get_dist(s, d):
     return dist
 
 
-def dump():
-    CYAN = '\033[1m'
-    ENDC = '\033[0m'
-    print('-'*12)
-    for r in range(0, R):
-        for c in range(0, C):
-            if (r, c) in S:
-                print(f"{CYAN}{data[r][c]}{ENDC}", end=" ")
-            else:
-                print(data[r][c], end=" ")
-        print()
-    print('-'*12)
-
-
-for r in range(0, R):
-    m = -1
-    for c in range(0, C):
-        if data[r][c] > m:
-            m = data[r][c]
+for r in range(R):
+    for c in range(C):
+        if is_visible(r, c):
             S.add((r, c))
-            if m == 9:
-                break
-
-    m = -1
-    for c in range(C-1, -1, -1):
-        if data[r][c] > m:
-            m = data[r][c]
-            S.add((r, c))
-            if m == 9:
-                break
-
-for c in range(0, C):
-    m = -1
-    for r in range(0, R):
-        if data[r][c] > m:
-            m = data[r][c]
-            S.add((r, c))
-            if m == 9:
-                break
-
-    m = -1
-    for r in range(R-1, -1, -1):
-        if data[r][c] > m:
-            m = data[r][c]
-            S.add((r, c))
-            if m == 9:
-                break
 
 
 for s in S:
@@ -97,6 +81,6 @@ for s in S:
     if v > max:
         max = v
 
-
+# dump()
 tot = len(S)
 print(f"Scores {tot} {max}")
