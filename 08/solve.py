@@ -55,11 +55,9 @@ def dump():
 for r in range(0, R):
     m = -1
     for c in range(0, C):
-        # print("cons", (r, c), data[r][c])
         if data[r][c] > m:
             m = data[r][c]
             S.add((r, c))
-            # print("L", (r, c), m)
             if m == 9:
                 break
 
@@ -68,28 +66,23 @@ for r in range(0, R):
         if data[r][c] > m:
             m = data[r][c]
             S.add((r, c))
-            # print("R", (r, c), m)
             if m == 9:
                 break
 
 for c in range(0, C):
     m = -1
     for r in range(0, R):
-        # print("cons", (r, c), data[r][c])
         if data[r][c] > m:
             m = data[r][c]
             S.add((r, c))
-            # print("T", (r, c), m)
             if m == 9:
                 break
 
     m = -1
     for r in range(R-1, -1, -1):
-        # print("cons", (r, c), data[r][c])
         if data[r][c] > m:
             m = data[r][c]
             S.add((r, c))
-            # print("B", (r, c), )
             if m == 9:
                 break
 tot = len(S)
