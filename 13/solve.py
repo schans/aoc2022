@@ -60,6 +60,3 @@ for i, x in enumerate(S):
         tot2 *= i+1
 
 print(f"Scores {tot} {tot2}")
-
-
-# Scores 5390 19261
