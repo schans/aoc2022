@@ -11,11 +11,11 @@ L = []
 def comp(f, s):
     if isinstance(f, int) and isinstance(s, int):
         if f < s:
-            return True
+            return -1
         elif f > s:
-            return False
+            return 1
         else:
-            return 'unknown'
+            return 0
     elif isinstance(f, int):
         return comp([f], s)
     elif isinstance(s, int):
@@ -24,26 +24,18 @@ def comp(f, s):
         for i, fe in enumerate(f):
             if i >= len(s):
                 # out or right
-                return False
+                return 1
             se = s[i]
             res = comp(fe, se)
-            if res == 'unknown':
+            if res == 0:
                 continue
             else:
                 return res
         if len(f) == len(s):
-            # undecided
-            return 'unknown'
+            return 0
         else:
             # out of left
-            return True
-
-
-def compare(f, s):
-    if comp(f, s):
-        return -1
-    else:
-        return 1
+            return -1
 
 
 for line in fileinput.input():
@@ -55,22 +47,19 @@ for line in fileinput.input():
 
 # part 1
 for i in range(len(L)//2):
-    if comp(L[2*i], L[2*i+1]):
+    if comp(L[2*i], L[2*i+1]) == -1:
         tot += i + 1
 
 # part 2
 L.append([[6]])
 L.append([[2]])
-S = sorted(L, key=cmp_to_key(compare))
-f = s = 0
+S = sorted(L, key=cmp_to_key(comp))
+tot2 = 1
 for i, x in enumerate(S):
-    if x == [[2]]:
-        f = i + 1
-    elif x == [[6]]:
-        s = i + 1
-        break
+    if x == [[2]] or x == [[6]]:
+        tot2 *= i+1
 
-print(f"Scores {tot} {f*s}")
+print(f"Scores {tot} {tot2}")
 
 
 # Scores 5390 19261
