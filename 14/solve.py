@@ -7,10 +7,7 @@ tot = 0
 tot2 = 0
 R = set()
 S = set()
-MAXX = 0
 MAXY = 0
-MINX = 500
-MINY = 500
 
 # parse
 for line in fileinput.input():
@@ -28,96 +25,61 @@ for line in fileinput.input():
         (x0, y0) = r[i]
         (x1, y1) = r[i+1]
 
-        if min(x0, x1) < MINX:
-            MINX = min(x0, x1)
-        elif max(x0, x1) > MAXX:
-            MAXX = max(x0, x1)
+        x0, x1 = sorted([x0, x1])
+        y0, y1 = sorted([y0, y1])
 
-        if min(y0, y1) < MINY:
-            MINY = min(y0, y1)
-        elif max(y0, y1) > MAXY:
-            MAXY = max(y0, y1)
+        MAXY = max(MAXY, y0, y1)
 
-        R.add((x0, y0))
-        R.add((x1, y1))
-
-        if x0 < x1:
-            for x in range(x0, x1):
-                R.add((x, y0))
-        elif x0 > x1:
-            for x in range(x1, x0):
-                R.add((x, y0))
-        elif y0 < y1:
-            for y in range(y0, y1):
-                R.add((x0, y))
-        elif y0 > y1:
-            for y in range(y1, y0):
-                R.add((x0, y))
+        for x in range(x0, x1 + 1):
+            for y in range(y0, y1 + 1):
+                R.add((x, y))
 
 
-def dump():
-    print("*" * 60)
-    for y in range(0, MAXY + 4):
-        for x in range(MINX-3, MAXX+3):
-            if (x, y) in R:
-                print('#', end="")
-            elif (x, y) in S:
-                print('o', end="")
-            else:
-                print('.', end="")
-        print()
-    print("*" * 60)
+def drop():
+    b = R.copy()
+    t = 0
+    while True:
+        x = 500
+        y = 0
+        while True:
+            if y >= MAXY:
+                # fell down
+                return t
+            if (x, y+1) not in b:
+                y += 1
+                continue
+            if (x-1, y+1) not in b:
+                x -= 1
+                y += 1
+                continue
+            if (x+1, y+1) not in b:
+                x += 1
+                y += 1
+                continue
+
+            b.add((x, y))
+            t += 1
+            break
 
 
-def drop(x=500, y=-1):
-    rocks_y = set()
-    for (rx, ry) in R:
-        if rx == x and ry > y:
-            rocks_y.add(ry)
-    sand_y = set()
-    for (sx, sy) in S:
-        if sx == x and sy > y:
-            sand_y.add(sy)
-
-    if len(rocks_y) == 0 and len(sand_y) == 0:
-        # fall down
-        return False
-
-    m = min(rocks_y | sand_y)
-
-    if m == 0:
-        # Reached top
-        return False
-
-    if (x-1, m) not in R and (x-1, m) not in S:
-        return drop(x-1, m)
-
-    if (x+1, m) not in R and (x+1, m) not in S:
-        return drop(x+1, m)
-
-    S.add((x, m-1))
-    return True
-
-
-def draw(sx=500):
+def draw():
+    sx = 500
     S.add((sx, 0))
     for y in range(1, MAXY+3):
         for x in range(sx-y, sx+y+1):
             if (x+1, y-1) in S or (x, y-1) in S or (x-1, y-1) in S:
                 if not (x, y) in R:
                     S.add((x, y))
+    return len(S)
 
 
 # part 1
-while drop(500):
-    pass
-tot = len(S)
+tot = drop()
 
 # part 2
 S = set()
 for i in range(0, 550 + MAXY):
     R.add((i, MAXY+2))
-draw()
-tot2 = len(S)
+tot2 = draw()
 
 print(f"1: {tot} 2: {tot2}")
