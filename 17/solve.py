@@ -35,8 +35,8 @@ for line in fileinput.input():
     IL = len(I)
 
 
-def dump(p=None):
-    for h in range(RM+7, 0, -1):
+def dump(h, p=None):
+    for h in range(h, 0, -1):
         print(f"{h:4} |", end="")
         for x in range(W):
             if p and (x, h) in p:
