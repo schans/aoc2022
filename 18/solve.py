@@ -9,8 +9,7 @@ tot2 = 0
 
 C = set()
 A = set()
-D = set()
-
+DIRS = [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]
 min_x = 10
 max_x = 0
 min_y = 10
@@ -35,7 +34,7 @@ for line in fileinput.input():
 for (x, y, z) in C:
     tot += 6
     n = 0
-    for (dx, dy, dz) in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
+    for (dx, dy, dz) in DIRS:
         if (x+dx, y+dy, z+dz) in C:
             n += 1
             tot -= 1
@@ -63,13 +62,14 @@ def enclosed(start, G):
         if not (min_x <= x <= max_x and min_y <= y <= max_y and min_z <= z <= max_z):
             return False
 
-        for (dx, dy, dz) in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
+        for (dx, dy, dz) in DIRS:
             if not (x+dx, y+dy, z+dz) in G:
                 heappush(queue, (d+1, (x+dx, y+dy, z+dz)))
 
     return seen
 
 
+# find all enclosed
 E = set()
 for a in A:
     if a not in E:
@@ -77,10 +77,10 @@ for a in A:
         if encl:
             E |= encl
 
-# remove side touching enclosed
+# remove sides touching enclosed
 tot2 = tot
 for (x, y, z) in E:
-    for (dx, dy, dz) in [(1, 0, 0), (-1, 0, 0), (0, 1, 0), (0, -1, 0), (0, 0, 1), (0, 0, -1)]:
+    for (dx, dy, dz) in DIRS:
         if (x+dx, y+dy, z+dz) in C:
             tot2 -= 1
 
